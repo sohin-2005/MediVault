@@ -82,13 +82,3 @@ class AuditLog(Base):
     entity_id = Column(Integer)
     ip_address = Column(String(64))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-from pydantic_settings import BaseSettings
-
-class Settings(BaseSettings):
-    database_url: str
-    jwt_secret: str
-    jwt_algorithm: str
-    jwt_expires_minutes: int
-
-    class Config:
-        env_file = ".env"
