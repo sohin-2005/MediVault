@@ -1,6 +1,42 @@
-from pydantic import BaseModel
+# app/schemas.py
+from pydantic import BaseModel, EmailStr
 from datetime import datetime, date
+from enum import Enum
 from typing import Optional
+
+# -------- Role Enum ----------
+class RoleEnum(str, Enum):
+    admin = "admin"
+    doctor = "doctor"
+    patient = "patient"
+
+# -------- User Schemas ----------
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+    full_name: Optional[str] = None
+    phone: Optional[str] = None
+    role: RoleEnum
+
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
+    full_name: Optional[str]
+    phone: Optional[str]
+    role: RoleEnum
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+# -------- Auth Schemas ----------
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class TokenData(BaseModel):
+    id: Optional[int] = None
+    email: Optional[EmailStr] = None
 
 # ------------------------
 # Expenses

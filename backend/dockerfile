@@ -3,12 +3,22 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /code
 
-# Install dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the app
+# Install netcat (needed for nc in entrypoint.sh)
+RUN apt-get update && apt-get install -y netcat-openbsd && rm -rf /var/lib/apt/lists/*
+
+# Copy app code
 COPY . .
 
-# Default command (overridden by docker-compose)
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Use entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
+
+# Default command (uvicorn)
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

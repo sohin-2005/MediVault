@@ -1,21 +1,40 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import AppointmentsPage from "./pages/AppointmentsPage";
-import ExpensesPage from "./pages/ExpensesPage";
-import AuditLogsPage from "./pages/AuditLogsPage";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-export default function App() {
+import { PublicHeader } from "./components/PublicHeader";
+import LandingPage from "./pages/LandingPage";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import ExpensesPage from "./pages/ExpensesPage";
+
+function App() {
   return (
-    <BrowserRouter>
-      <nav className="p-4 bg-gray-100 flex gap-4">
-        <Link to="/appointments">Appointments</Link>
-        <Link to="/expenses">Expenses</Link>
-        <Link to="/audit-logs">Audit Logs</Link>
-      </nav>
+    <>
+      {/* Public header always visible */}
+      <PublicHeader
+        onLogin={() => (window.location.href = "/login")}
+        onRegister={() => (window.location.href = "/register")}
+      />
+
+      {/* Define routes */}
       <Routes>
-        <Route path="/appointments" element={<AppointmentsPage />} />
+        <Route
+          path="/"
+          element={
+            <LandingPage
+              onGetStarted={() => (window.location.href = "/register")}
+              onLogin={() => (window.location.href = "/login")}
+            />
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/expenses" element={<ExpensesPage />} />
-        <Route path="/audit-logs" element={<AuditLogsPage />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
+
+export default App;

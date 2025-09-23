@@ -1,4 +1,4 @@
-from .user import User, RoleEnum
+from .user import User
 from .patient import Patient
 from .doctor import Doctor
 from .record import Record
